@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Моя коллекция - FilmCollection</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23ff6b00'/><rect x='10' y='20' width='80' height='60' fill='white'/><circle cx='25' cy='30' r='5' fill='%23ff6b00'/><circle cx='25' cy='50' r='5' fill='%23ff6b00'/><circle cx='25' cy='70' r='5' fill='%23ff6b00'/><circle cx='75' cy='30' r='5' fill='%23ff6b00'/><circle cx='75' cy='50' r='5' fill='%23ff6b00'/><circle cx='75' cy='70' r='5' fill='%23ff6b00'/></svg>" type="image/svg+xml">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <a href="index.html" style="text-decoration: none; color: inherit;">
+                    <h1>FilmCollection</h1>
+                </a>
+            </div>
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" placeholder="Поиск в моей коллекции..." id="collectionSearch">
+                    <button class="search-btn" id="collectionSearchBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M21 21L16 16M10 18C6.13401 18 3 14.866 3 11C3 7.13401 6.13401 4 10 4C13.866 4 17 7.13401 17 11C17 14.866 13.866 18 10 18Z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+            <div class="auth-buttons" id="authButtons">
+                <button class="btn-login">Войти</button>
+                <button class="btn-register">Регистрация</button>
+            </div>
+            <div class="user-profile" id="userProfile" style="display: none;">
+                <div class="profile-avatar-container">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b00'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>" 
+                         alt="Аватар" class="profile-avatar default" id="profileAvatar">
+                    <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                </div>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div class="dropdown-item" id="userName">Пользователь</div>
+                    <div class="dropdown-item" id="myCollectionBtn">Моя коллекция</div>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item" id="logoutBtn">Выйти</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="collection-header">
+                <h1>Моя коллекция</h1>
+                <div class="collection-stats" id="collectionStats">
+                </div>
+            </div>
+
+            <div class="collection-filters">
+                <div class="status-filter">
+                    <button class="status-filter-btn active" data-status="all">Все</button>
+                    <button class="status-filter-btn" data-status="wishlist">Хочу посмотреть</button>
+                    <button class="status-filter-btn" data-status="watching">В процессе</button>
+                    <button class="status-filter-btn" data-status="watched">Просмотрено</button>
+                </div>
+                
+                <div class="rating-filter">
+                    <select id="ratingFilter">
+                        <option value="all">Все оценки</option>
+                        <option value="rated">С оценкой</option>
+                        <option value="no-rating">Без оценки</option>
+                        <option value="10">10 ★</option>
+                        <option value="9">9 ★</option>
+                        <option value="8">8 ★</option>
+                        <option value="7">7 ★</option>
+                        <option value="6">6 ★</option>
+                        <option value="5">5 ★</option>
+                        <option value="4">4 ★</option>
+                        <option value="3">3 ★</option>
+                        <option value="2">2 ★</option>
+                        <option value="1">1 ★</option>
+                    </select>
+                </div>
+                
+                <div class="collection-sort">
+                    <select id="collectionSort">
+                        <option value="addedDate">По дате добавления</option>
+                        <option value="title">По названию</option>
+                        <option value="rating">По оценке</option>
+                        <option value="year">По году</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="search-results" id="collectionResults">
+            </div>
+
+            <div class="collection-grid" id="collectionGrid">
+            </div>
+
+            <div class="no-collection" id="noCollection" style="display: none;">
+                <div class="empty-state">
+                    <h2>Ваша коллекция пуста</h2>
+                    <p>Добавляйте фильмы и сериалы в коллекцию, чтобы отслеживать свой прогресс просмотра</p>
+                    <a href="index.html" class="btn-primary">Перейти к каталогу</a>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <div class="modal" id="collectionItemModal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body" id="collectionItemModalBody">
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/api-config.js"></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/collection.js"></script>
+</body>
+</html>

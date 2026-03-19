@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>FilmCollection - Ваша коллекция фильмов и сериалов</title>
+    <link rel="stylesheet" href="./css/style.css">
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' fill='%23ff6b00'/><rect x='10' y='20' width='80' height='60' fill='white'/><circle cx='25' cy='30' r='5' fill='%23ff6b00'/><circle cx='25' cy='50' r='5' fill='%23ff6b00'/><circle cx='25' cy='70' r='5' fill='%23ff6b00'/><circle cx='75' cy='30' r='5' fill='%23ff6b00'/><circle cx='75' cy='50' r='5' fill='%23ff6b00'/><circle cx='75' cy='70' r='5' fill='%23ff6b00'/></svg>" type="image/svg+xml">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <h1>FilmCollection</h1>
+            </div>
+            <div class="search-container">
+                <div class="search-box">
+                    <input type="text" placeholder="Поиск по названию, актерам..." id="searchInput">
+                    <button class="filter-btn" id="filterBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M4 6H20M7 12H17M9 18H15" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </button>
+                    <button class="search-btn" id="searchBtn">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+                            <path d="M21 21L16 16M10 18C6.13401 18 3 14.866 3 11C3 7.13401 6.13401 4 10 4C13.866 4 17 7.13401 17 11C17 14.866 13.866 18 10 18Z" stroke="currentColor" stroke-width="2"/>
+                        </svg>
+                    </button>
+                </div>
+                
+                <div class="filters-dropdown" id="filtersDropdown">
+                    <div class="filters-section">
+                        <h3>Годы выпуска</h3>
+                        <div class="year-range">
+                            <div class="range-inputs">
+                                <input type="number" id="yearFrom" placeholder="1890" min="1890" max="2026">
+                                <span>—</span>
+                                <input type="number" id="yearTo" placeholder="2026" min="1890" max="2026">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filters-section">
+                        <h3>Жанры</h3>
+                        <div class="filters-checkboxes" id="genreFilters">
+                        </div>
+                    </div>
+                    
+                    <div class="filters-section">
+                        <h3>Страны</h3>
+                        <div class="filters-checkboxes" id="countryFilters">
+                        </div>
+                    </div>
+                    
+                    <div class="filters-section">
+                        <h3>Режиссеры</h3>
+                        <div class="filters-checkboxes" id="directorFilters">
+                        </div>
+                    </div>
+                    
+                    <div class="filters-section">
+                        <h3>Тип контента</h3>
+                        <div class="content-type-filters">
+                            <div class="filter-checkbox">
+                                <input type="checkbox" id="type-movie" value="фильм" checked>
+                                <label for="type-movie">Фильмы</label>
+                            </div>
+                            <div class="filter-checkbox">
+                                <input type="checkbox" id="type-series" value="сериал" checked>
+                                <label for="type-series">Сериалы</label>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="filters-section">
+                        <h3>Сортировка</h3>
+                        <div class="sort-options">
+                            <button class="sort-option" data-sort="rating">По рейтингу</button>
+                            <button class="sort-option" data-sort="year">По году</button>
+                            <button class="sort-option" data-sort="title">По названию</button>
+                        </div>
+                    </div>
+                    
+                    <div class="filters-actions">
+                        <button class="apply-filters">Применить</button>
+                        <button class="reset-filters">Сбросить</button>
+                    </div>
+                </div>
+            </div>
+            <div class="auth-buttons">
+                <button class="btn-login">Войти</button>
+                <button class="btn-register">Регистрация</button>
+            </div>
+            <div class="user-profile" id="userProfile" style="display: none;">
+                <div class="profile-avatar-container">
+                    <img src="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ff6b00'><path d='M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z'/></svg>" 
+                        alt="Аватар" class="profile-avatar default" id="profileAvatar">
+                    <input type="file" id="avatarUpload" accept="image/*" style="display: none;">
+                </div>
+                <div class="profile-dropdown" id="profileDropdown">
+                    <div class="dropdown-item" id="userName">Пользователь</div>
+                    <div class="dropdown-item" id="myCollectionBtn">Моя коллекция</div>
+                    <div class="dropdown-divider"></div>
+                    <div class="dropdown-item" id="logoutBtn">Выйти</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="main">
+        <div class="container">
+            <div class="search-results" id="searchResults">Найдено: 100 из 100</div>
+            <div class="catalog-grid" id="catalog-grid">
+            </div>
+        </div>
+    </main>
+
+    <div class="modal" id="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <div class="modal-body" id="modal-body">
+            </div>
+        </div>
+    </div>
+
+    <div id="loginModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <div class="auth-modal-header">
+                <h2 class="auth-modal-title">Вход</h2>
+                <span class="close auth-close">&times;</span>
+            </div>
+            <div class="auth-modal-body">
+                <form class="auth-form" id="loginForm">
+                    <div class="form-group">
+                        <label for="loginEmail">Email</label>
+                        <input type="email" id="loginEmail" required placeholder="example@mail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="loginPassword">Пароль</label>
+                        <input type="password" id="loginPassword" required placeholder="Введите пароль">
+                    </div>
+                    <button type="submit" class="auth-submit-btn">Войти</button>
+                </form>
+                <div class="auth-switch">
+                    Нет аккаунта? <a id="switchToRegister">Зарегистрироваться</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="registerModal" class="auth-modal">
+        <div class="auth-modal-content">
+            <div class="auth-modal-header">
+                <h2 class="auth-modal-title">Регистрация</h2>
+                <span class="close auth-close">&times;</span>
+            </div>
+            <div class="auth-modal-body">
+                <form class="auth-form" id="registerForm">
+                    <div class="form-group">
+                        <label for="registerName">Имя</label>
+                        <input type="text" id="registerName" required placeholder="Введите имя">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerEmail">Email</label>
+                        <input type="email" id="registerEmail" required placeholder="example@mail.com">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerPassword">Пароль</label>
+                        <input type="password" id="registerPassword" required minlength="6" placeholder="Не менее 6 символов">
+                    </div>
+                    <div class="form-group">
+                        <label for="registerConfirmPassword">Подтвердите пароль</label>
+                        <input type="password" id="registerConfirmPassword" required placeholder="Повторите пароль">
+                    </div>
+                    <button type="submit" class="auth-submit-btn">Зарегистрироваться</button>
+                </form>
+                <div class="auth-switch">
+                    Уже есть аккаунт? <a id="switchToLogin">Войти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="./js/api-config.js"></script>
+    <script src="./js/utils.js"></script>
+    <script src="./js/script.js"></script>
+</body>
+</html>
